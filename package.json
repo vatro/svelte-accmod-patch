@@ -1,0 +1,39 @@
+{
+  "name": "svelte-accmod-patch",
+  "version": "1.0.0-rc1",
+  "author": "Vatroslav Vrbanic",
+  "description": "Patch for existing Svelte projects making them use svelte-accmod 'under the hood'.",
+  "main": "svelte-accmod-patch.js",
+  "bin": "svelte-accmod-patch.js",
+  "type": "module",
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "devDependencies": {
+    "fs-extra": "^10.0.0",
+    "ora": "^6.0.1",
+    "rimraf": "^3.0.2",
+    "strip-json-comments": "^4.0.0"
+  },
+  "bundledDependencies": [
+    "fs-extra",
+    "strip-json-comments",
+    "ora",
+    "rimraf"
+  ],
+  "keywords": [
+    "svelte",
+    "svelte-accmod",
+    "patch",
+    "svelte-accmod-patch"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vatro/svelte-accmod-patch.git"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/vatro/svelte-accmod-patch/issues"
+  },
+  "homepage": "https://github.com/vatro/svelte-accmod-patch#readme"
+}
