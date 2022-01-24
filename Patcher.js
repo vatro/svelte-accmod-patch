@@ -18,6 +18,7 @@ export default class Patcher {
     const project_root_abs = process.cwd();
 
     const pkj_file_path_abs = join(project_root_abs, 'package.json');
+    const pkj_svelte_path = join(project_root_abs, 'node_modules/svelte/package.json');
 
     const svelte_accmod_path = join(project_root_abs, 'node_modules/svelte-accmod/');
 
@@ -51,41 +52,47 @@ export default class Patcher {
     async function on_apply() {
       // get installed svelte version from projects' package.json
       console.log(`${pfx_apply} replacing original 'svelte' files with corresponding 'svelte-accmod' files ...`);
-      const svelte_version = await get_svelte_version();
+      const svelte_version = await get_installed_svelte_version();
 
       await install_svelte_accmod(svelte_version);
       replace_files();
     }
 
-    async function get_svelte_version() {
-      const pkj = await readFile(pkj_file_path_abs, 'utf8');
+    async function get_installed_svelte_version() {
+
+      const pkj = await readFile(pkj_svelte_path, 'utf8');
       const pkj_content = JSON.parse(stripJsonComments(pkj));
 
-      let svelte_version;
-
-      if (pkj_content.devDependencies && pkj_content.devDependencies.svelte) {
-        svelte_version = pkj_content.devDependencies.svelte;
-      } else if (pkj_content.dependencies && pkj_content.dependencies.svelte) {
-        svelte_version = pkj_content.devDependencies.svelte;
-      }
+      const svelte_version = pkj_content.version;
 
       console.log(`ℹ️ detected svelte version: ${svelte_version} ...`);
       return svelte_version;
     }
 
+    // yeah, I know :/ ...
+    function get_fixed_version(svelte_version) {
+        switch (svelte_version) {
+          case '3.44.2': return '3.44.2-1'
+          default: return svelte_version
+        }
+    }
+
     async function install_svelte_accmod(svelte_version) {
       const options = { spinner: 'dots' };
 
+      const comparator_operator = ''
+      const accmod_version = get_fixed_version(svelte_version)
+
       spinner = ora(options);
-      spinner.start(`installing svelte-accmod@"${svelte_version}" ...`);
+      spinner.start(`installing svelte-accmod@${comparator_operator}${accmod_version} ...`);
 
       await new Promise((resolve, reject) => {
-        exec(`npm i svelte-accmod@"${svelte_version}" --save-dev`, (err, stdout, stderr) => {
+        exec(`npm i svelte-accmod@${comparator_operator}${accmod_version} --save-dev`, (err, stdout, stderr) => {
           if (err) {
-            spinner.fail(chalk.red(`oops! ABORT: svelte-accmod@${svelte_version} not available!`));
+            spinner.fail(chalk.red(`oops! ABORT: svelte-accmod@${comparator_operator}${accmod_version} not available!`));
             process.exit();
           }
-          spinner.succeed(`installed svelte-accmod@"${svelte_version}" ...`);
+          spinner.succeed(`installed svelte-accmod@${comparator_operator}${accmod_version} ...`);
           resolve();
         });
       });
@@ -224,7 +231,7 @@ export default class Patcher {
     }
 
     function on_finished() {
-      spinner.succeed(chalk.green(`🚀 DONE! You're now using 'svelte-accmod' instead of original 'svelte'!`));
+      spinner.succeed(chalk.green(`🚀 DONE! You're now using 'svelte-accmod'!`));
     }
   }
 }
