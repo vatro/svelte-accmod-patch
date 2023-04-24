@@ -1,3 +1,7 @@
+| ⚠️ DEVELOPMENT HALTED ⚠️ |
+| -------|
+|[`svelte-accmod`](https://github.com/vatro/svelte-accmod) (_an **experimental** version of Svelte_) was primarily developed for usage with [`svelthree`](https://github.com/vatro/svelthree). Since `svelthree` is now **"default Svelte first"** (_not "`svelte-accmod` first" as before_), **the development of `svelte-accmod` and `svelte-accmod-patch` has been halted!** (_may be continued at some point in future, though_).|
+
 ## svelte-accmod-patch
 
 [svelte-accmod](https://github.com/vatro/svelte-accmod) patch for Svelte projects: can be used with any existing project depending on Svelte *(installed locally)*, like e.g. [SvelteKit](https://github.com/sveltejs/kit) or [standard Svelte starter](https://github.com/sveltejs/template) based projects etc.
